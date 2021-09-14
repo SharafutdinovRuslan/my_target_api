@@ -1,6 +1,11 @@
-# my_target_api
+# MyTarget API Wrappers
 
-## примеры использования: 
+## Установка
+```shell
+
+```
+
+## Примеры использования: 
 ```python
 from http_client  import HttpClient
 import os
