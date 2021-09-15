@@ -16,5 +16,6 @@ setuptools.setup(
     ],
     package_dir={"my_target_api": "my_target_api"},
     packages=["my_target_api"],
+    include_package_data=True,
     python_requires=">=3.6",
 )

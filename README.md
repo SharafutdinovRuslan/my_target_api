@@ -2,12 +2,12 @@
 
 ## Установка
 ```shell
-
+python -m pip install git+https://github.com/SharafutdinovRuslan/my_target_api
 ```
 
 ## Примеры использования: 
 ```python
-from http_client  import HttpClient
+from my_target_api.http_client import HttpClient
 import os
 
 
