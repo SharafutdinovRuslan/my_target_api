@@ -14,7 +14,7 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3",
     ],
-    package_dir={"": "src"},
-    packages=setuptools.find_packages(where="src"),
+    package_dir={"my_target_api": "my_target_api"},
+    packages=["my_target_api"],
     python_requires=">=3.6",
 )
