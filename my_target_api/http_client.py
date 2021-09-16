@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from typing import List, Union
 
 from http_api_environment import HttpApiEnvironment
 from authorization.agency_client_credentials_grant import AgencyClientCredentialsGrant
@@ -49,15 +50,24 @@ class HttpClient:
 
         return RemarketingUsersList(executor=executor)
 
-    def upload_remarketing_users_list(self, file_path: str, list_name: str, list_type: str):
+    def upload_remarketing_users_list(self, user_list: List[Union[str, int]], list_name: str, list_type: str, list_id: int = None):
         remarketing_users_list = self.get_remarketing_users_list()
+        user_chunks = remarketing_users_list.split_user_list_by_chunks(user_list, list_type)
 
         response = remarketing_users_list.post(
-            file_path, list_name, list_type
+            user_chunks[0], list_name, list_type, list_id
         )
-
         if response.status_code != HTTPStatus.OK:
             raise MyTargetApiBaseException(response)
+
+        list_id = int(response.json().get('id'))
+        for chunk in user_chunks[1:]:
+            response = remarketing_users_list.post(
+                chunk, list_name, list_type, list_id
+            )
+            if response.status_code != HTTPStatus.OK:
+                raise MyTargetApiBaseException(response)
+
         return response
 
     def get_segments(self) -> Segments:

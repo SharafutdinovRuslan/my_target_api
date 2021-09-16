@@ -21,8 +21,8 @@ client = HttpClient(
 client.initialize_access_token(is_permanent=False)
 
 upload_remarketing_users_list_response = client.upload_remarketing_users_list(
-    file_path='/your/file/path/ok.csv',
-    list_name='тестовый список ОК',
+    user_list=[1, 2, 3, 4],
+    list_name='тестовый список OK',
     list_type='ok',
 )
 
