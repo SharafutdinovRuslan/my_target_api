@@ -6,7 +6,6 @@ from executors.http_executor import HttpExecutor
 
 
 class RemarketingUsersList(AbstractResource):
-
     USER_LIST_MAX_CHUNK_SIZE = 4999999
     USER_LIST_MIN_CHUNK_SIZE = 1999
 
@@ -16,11 +15,9 @@ class RemarketingUsersList(AbstractResource):
         super().__init__(executor)
 
     @staticmethod
-    def add_user_list_headers(user_list: List[Union[str]], list_type: str, partner_id: int = None) -> str:
+    def add_user_list_headers(user_list: List[Union[str]], list_type: str) -> str:
         if list_type == 'dmp_id':
-            if not partner_id:
-                raise KeyError('for dmp_id list type partner_id should be set to')
-            header = f'{partner_id},\nid,\n'
+            header = f'dm\nid\n'
         else:
             header = 'id,\n'
 
@@ -30,7 +27,8 @@ class RemarketingUsersList(AbstractResource):
 
     @staticmethod
     def split_user_list_by_chunks(user_list: List[Union[str, int]], list_type: str):
-        max_chunk_size, min_chink_size = (RemarketingUsersList.USER_LIST_MAX_CHUNK_SIZE, RemarketingUsersList.USER_LIST_MIN_CHUNK_SIZE) if list_type != 'dmp_id' \
+        max_chunk_size, min_chink_size = (RemarketingUsersList.USER_LIST_MAX_CHUNK_SIZE,
+                                          RemarketingUsersList.USER_LIST_MIN_CHUNK_SIZE) if list_type != 'dmp_id' \
             else (RemarketingUsersList.USER_LIST_MAX_CHUNK_SIZE - 1, RemarketingUsersList.USER_LIST_MIN_CHUNK_SIZE - 1)
 
         if len(user_list) < min_chink_size:
@@ -54,7 +52,7 @@ class RemarketingUsersList(AbstractResource):
 
         return chunks
 
-    def post(self, user_list: List[Union[str, int]], list_name: str, list_type: str, list_id: int = None, partner_id: int = None) -> requests.Response:
+    def post(self, user_list: List[Union[str, int]], list_name: str, list_type: str, list_id: int = None) -> requests.Response:
         if list_type not in self.ALLOWED_LIST_TYPES:
             raise ValueError(f'List type {list_type} is not allowed')
 
@@ -64,13 +62,13 @@ class RemarketingUsersList(AbstractResource):
             **({'base': list_id} if list_id else {})
         }
 
-        prepared_user_list = self.add_user_list_headers(user_list, list_type, partner_id)
+        prepared_users_str = self.add_user_list_headers(user_list, list_type)
         return self.executor.request(
             method='post',
             path='remarketing/users_lists.json',
             data=data,
             files={
-                'file': ('file.csv', prepared_user_list)
+                'file': ('file.csv', prepared_users_str)
             }
         )
 

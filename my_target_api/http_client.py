@@ -50,7 +50,8 @@ class HttpClient:
 
         return RemarketingUsersList(executor=executor)
 
-    def upload_remarketing_users_list(self, user_list: List[Union[str, int]], list_name: str, list_type: str, list_id: int = None):
+    def upload_remarketing_users_list(self, user_list: List[Union[str, int]], list_name: str, list_type: str,
+                                      list_id: int = None):
         remarketing_users_list = self.get_remarketing_users_list()
         user_chunks = remarketing_users_list.split_user_list_by_chunks(user_list, list_type)
 
@@ -85,5 +86,3 @@ class HttpClient:
         if response.status_code != HTTPStatus.OK:
             raise MyTargetApiBaseException(response)
         return response
-
-
