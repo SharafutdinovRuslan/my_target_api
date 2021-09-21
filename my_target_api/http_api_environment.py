@@ -8,7 +8,7 @@ class HttpApiEnvironment:
 
     API_VERSION_V2 = 'v2'
     API_VERSION_V3 = 'v3'
-    DEFAULT_API_VERSION = API_VERSION_V3
+    DEFAULT_API_VERSION = API_VERSION_V2
 
     def __init__(self, is_sandbox: bool, api_version: str = DEFAULT_API_VERSION):
         self.is_sandbox = is_sandbox

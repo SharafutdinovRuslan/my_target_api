@@ -9,7 +9,7 @@ class RemarketingUsersList(AbstractResource):
     USER_LIST_MAX_CHUNK_SIZE = 4999999
     USER_LIST_MIN_CHUNK_SIZE = 1999
 
-    ALLOWED_LIST_TYPES = ('ok', 'vk', 'dmp_id', 'idfa', 'advertising_id')
+    ALLOWED_LIST_TYPES = ('ok', 'vk', 'dmp_id', 'idfa', 'advertising_id', 'hid')
 
     def __init__(self, executor: HttpExecutor):
         super().__init__(executor)
